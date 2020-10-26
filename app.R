@@ -1,5 +1,5 @@
 # # Shiny-Dashboard zu Corona - Covid19
-# # 
+
 packages <- c("dplyr", "stringr", "data.table", "DT", "fs",
               "lubridate", "ggplot2", "plotly",
               "rmarkdown", "rpivotTable", "shiny", "shinydashboard",
