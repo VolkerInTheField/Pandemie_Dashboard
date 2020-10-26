@@ -2,8 +2,8 @@
 
 packages <- c("dplyr", "stringr", "data.table", "DT", "fs",
               "lubridate", "ggplot2", "plotly",
-              "rmarkdown", "rpivotTable", "shiny", "shinydashboard",
-              "rpivotTable")
+              "rmarkdown", "rpivotTable", "shiny", "shinydashboard")
+              
 
 lapply(packages, require, character.only = TRUE)
 
@@ -232,10 +232,10 @@ server <- function(input, output){
     
   })
   
-  # # Pivotbericht
-  output$id_pivotbericht <- renderRpivotTable({
-    rpivotTable(data_all_cum, rows = c("cases_country", "cum_cases"))
-  })
+  # # # Pivotbericht
+  # output$id_pivotbericht <- renderRpivotTable({
+  #   rpivotTable(data_all_cum, rows = c("cases_country", "cum_cases"))
+  # })
   
   # # Grafische Darstellungen
   output$id_plot_uebersicht_weltweit <- renderPlot({
