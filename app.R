@@ -2,7 +2,7 @@
 
 packages <- c("dplyr", "stringr", "data.table", "DT", "fs",
               "lubridate", "ggplot2", "plotly",
-              "rmarkdown", "rpivotTable", "shiny", "shinydashboard")
+              "rmarkdown", "shiny", "shinydashboard")
               
 
 lapply(packages, require, character.only = TRUE)
@@ -105,7 +105,7 @@ ui <- dashboardPage(skin = "yellow",
       
       tabItem(tabName = "id_pivot",
               h2("Pivotbericht"),
-              box(rpivotTableOutput("id_pivotbericht"), width = 12)
+              box(width = 12)
               
               ), # # ---Ende tabItem pivotbericht
       

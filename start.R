@@ -1,7 +1,7 @@
 # # Packages
 packages <- c("dplyr", "stringr", "data.table", "DT", "fs",
               "lubridate", "ggplot2", "plotly",
-              "rmarkdown", "rpivotTable")
+              "rmarkdown")
 
 lapply(packages, require, character.only = TRUE)
 
