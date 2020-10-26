@@ -5,3 +5,5 @@ output
 EU_Corona_Daten.Rproj
 sd_key.pem
 sd.key.ppk
+.gitignore
+
