@@ -3,7 +3,8 @@
 packages <- c("dplyr", "stringr", "data.table", "DT", "fs",
               "lubridate", "ggplot2", "plotly",
               "rmarkdown", "shiny", "shinydashboard")
-          
+  
+# # git pull?       
 lapply(packages, require, character.only = TRUE)
 
 source(paste0(getwd(),"/start.R"))
