@@ -1,0 +1,9 @@
+sudo docker run -d -p 8787:8787 -v /home/ubuntu/rstudio_docker:/home/rstudio_docker rocker/tidyverse 
+
+
+sudo docker run -e PASSWORD=your_password -d -p 8787:8787 -v /home/ubuntu/rstudio_docker:/home/rstudio/rstudio_docker rocker/tidyverse
+
+sudo docker container run --rm  -p 3838:3838 \
+-v /home/ubuntu/Pandemie_Dashboard/:/srv/shiny-server/Pandemie_Dashboard \
+-v /home/ubuntu/log/shiny-server/:/var/log/shiny-server/ \
+mdancho/shinyauth
