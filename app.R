@@ -11,7 +11,7 @@ source(paste0(getwd(),"/start.R"))
 
 ui <- dashboardPage(skin = "yellow",
   dashboardHeader(
-    title = "Corona - Covid-19"
+    title = "Daten zu Corona - Covid-19"
     
   ), # # ---Ende dashboardheader---
   

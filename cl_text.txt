@@ -7,3 +7,8 @@ sudo docker container run --rm  -p 3838:3838 \
 -v /home/ubuntu/Pandemie_Dashboard/:/srv/shiny-server/Pandemie_Dashboard \
 -v /home/ubuntu/log/shiny-server/:/var/log/shiny-server/ \
 mdancho/shinyauth
+
+sudo docker container run -d -p 80:3838 \
+-v /home/ubuntu/Pandemie_Dashboard/:/srv/shiny-server/Pandemie_Dashboard \
+-v /home/ubuntu/log/shiny-server/:/var/log/shiny-server/ \
+mdancho/shinyauth
