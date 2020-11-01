@@ -7,7 +7,7 @@ lapply(packages, require, character.only = TRUE)
 
 
 # # Datenimport
-#dataset <- fread("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
+dataset <- fread("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
 # # Die write-Funktion funktioniert nicht auf dem Server
 #write.table(dataset, paste0(getwd(),"/data/dataset.csv"), sep = ";", row.names = FALSE)
 
