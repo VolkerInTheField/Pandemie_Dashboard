@@ -7,8 +7,9 @@ lapply(packages, require, character.only = TRUE)
 
 
 # # Datenimport
-dataset <- fread("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
-write.table(dataset, paste0(getwd(),"/data/dataset.csv"), sep = ";", row.names = FALSE)
+#dataset <- fread("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv")
+# # Die write-Funktion funktioniert nicht auf dem Server
+#write.table(dataset, paste0(getwd(),"/data/dataset.csv"), sep = ";", row.names = FALSE)
 
 
 # # Tidy Dataset
@@ -24,11 +25,13 @@ data <- dataset %>%
 # # Kontinent- und Länderlisten erstellen
 df_list_continent <- as.data.frame(unique(data$continent))
 names(df_list_continent) = c("Continet")
-write.table(df_list_continent, paste0(getwd(),"/data/continent.csv"), sep = ";", row.names = FALSE)
+# # Die write-Funktion funktioniert nicht auf dem Server
+#write.table(df_list_continent, paste0(getwd(),"/data/continent.csv"), sep = ";", row.names = FALSE)
 
 df_list_country <- as.data.frame(unique(data$country))
 names(df_list_country) = c("Country")
-write.table(df_list_country, paste0(getwd(),"/data/country.csv"), sep = ";", row.names = FALSE)
+# # Die write-Funktion funktioniert nicht auf dem Server
+#write.table(df_list_country, paste0(getwd(),"/data/country.csv"), sep = ";", row.names = FALSE)
 
 
 # # Kumulierte Werte für das Tagesdatum ermitteln

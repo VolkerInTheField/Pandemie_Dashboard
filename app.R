@@ -19,10 +19,10 @@ ui <- dashboardPage(skin = "yellow",
     sidebarMenu(
       menuItem("Überblick",
                tabName = "id_ueberblick"),
-      menuItem("Tabellarische Darstellung",
+      menuItem("Quelle: 'opendata.ecdc.europa.eu'",
+               tabName = "id_originaldaten"),
+      menuItem("Aufbereitete Daten",
                tabName = "id_tabellarisch"),
-      menuItem("Pivotbericht",
-               tabName = "id_pivot"),
       menuItem("Grafische Darstellung",
                tabName = "id_grafisch")
     ) # # ---Ende sidebarMenu---
@@ -103,25 +103,30 @@ ui <- dashboardPage(skin = "yellow",
               
               ), # # ---Ende tabItem tabellarisch
       
-      tabItem(tabName = "id_pivot",
-              h2("Pivotbericht"),
-              box(width = 12)
-              
-              ), # # ---Ende tabItem pivotbericht
+      tabItem(tabName = "id_originaldaten",
+              fluidRow(
+                h2("Originaldatensatz der EU"),
+                box(DTOutput("id_datatable_02"), width = 12)
+                ),
+              fluidRow(
+                # Button
+                downloadButton("id_downloadData", "Download")
+               )
+              ), # # ---Ende tabItem originaldaten
       
       tabItem(tabName = "id_grafisch",
               h2("Grafische Darstellungen"),
               fluidRow(
-                box(plotOutput("id_plot_uebersicht_weltweit")),
+                box(plotlyOutput("id_plot_uebersicht_weltweit")),
                 
-                box(plotOutput("id_plot_aenderungen_weltweit"))
+                box(plotlyOutput("id_plot_todesfaelle_weltweit"))
                 
                 ), # # ---Ende 1. fluidRow in tabItem grafisch
               
               fluidRow(
                 h2("Länderauswahl"),
                 box(selectInput(inputId = "id_country_select",
-                                label = "Länderauswahl",
+                                label = "Mehrfachauswahl möglich",
                                 selected = "Germany",
                                 choices = df_list_country$Country,
                                 multiple = TRUE),
@@ -132,7 +137,7 @@ ui <- dashboardPage(skin = "yellow",
                                 value = Sys.Date() - 1),
                     width = 3),
                 
-                box(plotOutput("id_plot_country_select"),
+                box(plotlyOutput("id_plot_country_select"),
                     width = 9)
                 
                 
@@ -232,44 +237,43 @@ server <- function(input, output){
     
   })
   
-  # # # Pivotbericht
-  # output$id_pivotbericht <- renderRpivotTable({
-  #   rpivotTable(data_all_cum, rows = c("cases_country", "cum_cases"))
-  # })
+  # # Originaldatensatz
+  output$id_datatable_02 <- renderDT({
+    datatable(dataset, rownames = FALSE)
+    
+  })
   
   # # Grafische Darstellungen
-  output$id_plot_uebersicht_weltweit <- renderPlot({
-    gp_ue_ww <- ggplot(df_time, aes(x = datum, y = day_cases_ww)) +
-      geom_point() +
-      geom_point(aes(x = datum, y = cum_day_cases_ww)) +
-      scale_y_log10() +
-      labs(title = "Weltweite Entwicklung der Corona Fallzahlen",
-           x = "Zeit", y = "Neue und kumulierte Fallzahlen, logarithmisch") +
+  output$id_plot_uebersicht_weltweit <- renderPlotly({
+    gp_ue_ww <- ggplot(df_time, aes(x = datum, y = cum_day_cases_ww)) +
+      geom_line() +
+      labs(title = "Kumulierte Fallzahlen, weltweit",
+           x = "Zeit", y = "kumulierte Fallzahlen") +
       theme(
         panel.background = element_rect(fill = "#ffcc99"),
         axis.title = element_text(color = "blue"),
         title = element_text(color = "blue")
       )
-    gp_ue_ww
+    ggplotly(gp_ue_ww)
     
   })
   
-  output$id_plot_aenderungen_weltweit <- renderPlot({
-    gp_ae_ww <- ggplot(df_time, aes(x = datum, y = day_cases_ww)) +
-      geom_point() +
-      labs(title = "Tägliche Neuinfektionen weltweit",
-           x = "Zeit", y = "Neuinfektionen") +
+  output$id_plot_todesfaelle_weltweit <- renderPlotly({
+    gp_ae_ww <- ggplot(df_time, aes(x = datum, y = cum_day_deaths_ww)) +
+      geom_line() +
+      labs(title = "kumulierte Todesfälle, weltweit",
+           x = "Zeit", y = "kumulierte Todesfälle") +
       theme(
         panel.background = element_rect(fill = "#ffcc99"),
         axis.title = element_text(color = "blue"),
         title = element_text(color = "blue")
       )
-    gp_ae_ww
+    ggplotly(gp_ae_ww)
     
   })
   
   
-  output$id_plot_country_select <- renderPlot({
+  output$id_plot_country_select <- renderPlotly({
     gp_country_select <- ggplot(df_all_cum_countries %>% filter(country %in% input$id_country_select,
                                                                 datum <= input$id_date_select),
                                 aes(x = datum, y = cases_country, color = country)) +
@@ -282,10 +286,18 @@ server <- function(input, output){
         title = element_text(color = "blue")
       )
     
-    gp_country_select
+    ggplotly(gp_country_select)
     
   })
   
+  output$id_downloadData <- downloadHandler(
+    filename = function() {
+      paste(deparse(substitute(dataset)), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(dataset, file, row.names = FALSE)
+    }
+  )
   
 } # # ---Ende server---
 
